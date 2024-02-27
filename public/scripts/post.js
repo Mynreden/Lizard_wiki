@@ -9,7 +9,7 @@ let token = null;
 if (isAuth){
     user = JSON.parse(localStorage.getItem("user"));
     token = localStorage.getItem("token");
-    
+
     document.getElementById("forLogined").classList.remove('hidden')
     document.getElementById("forNotLogined").classList.add('hidden')
 
@@ -100,9 +100,10 @@ function openLizardGallery(name) {
     // Выполнение запроса к API Unsplash
     name = name.replace(/ /g, '%20');
 
-    fetch(`https://api.unsplash.com/photos/random?query=${name}&count=10&client_id=aePA3xftlHDFjLyBEctOA4XGSAbY45_1Z3Oh-OozF1Y`)
+    fetch(`/lizards/gallery?name=${name}`)
         .then(response => response.json())
         .then(data => {
+            data = data.data;
             // Обработка полученных данных
             const galleryContainer = document.getElementById('galleryContainer');
             galleryContainer.innerHTML = ''; // Очистка контейнера перед добавлением новых изображений
@@ -126,10 +127,12 @@ const getLizardSightings = async (speciesName) => {
         // Clear the container before loading new data
         const sightingsContainer = document.getElementById('sightingsContainer');
         sightingsContainer.innerHTML = '';
+        const name = speciesName.replace(/ /g, '%20');
 
         // Fetch lizard sightings data from iNaturalist API
-        const response = await fetch(`https://api.inaturalist.org/v1/observations?taxon_name=${encodeURIComponent(speciesName)}&order_by=desc&per_page=10`);
-        const data = await response.json();
+        const response = await fetch(`/lizards/sightings?name=${name}`);
+        const res = await response.json();
+        const data = res.data;
 
         // Display lizard sightings in the modal
         data.results.forEach(observation => {

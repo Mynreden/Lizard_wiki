@@ -38,3 +38,30 @@ export const addLizard = async (req, res) => {
 
     }
 }
+
+
+export const getGallery = async (req, res) =>{
+    try {
+        const name = req.query.name;
+        const data = await fetch(`https://api.unsplash.com/photos/random?query=${name}&count=10&client_id=aePA3xftlHDFjLyBEctOA4XGSAbY45_1Z3Oh-OozF1Y`)
+        .then(response => response.json())
+        res.status(200).json({data})
+    } catch(err){
+        console.log(err);
+        res.status(500).json({error: err.message})
+
+    }
+}
+
+export const getSightings = async (req, res) =>{
+    try {
+        const name = req.query.name;
+        const data = await fetch(`https://api.inaturalist.org/v1/observations?taxon_name=${name}&order_by=desc&per_page=10`)
+        .then(res => res.json());
+        res.status(200).json({data})
+    } catch(err){
+        console.log(err);
+        res.status(500).json({error: err.message})
+
+    }
+}
