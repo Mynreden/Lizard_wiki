@@ -1,0 +1,212 @@
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= post.speciesName %> - Lizard Post</title>
+    <!-- Подключение стилей Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Подключаем Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Подключаем Font Awesome для иконок -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    
+</head>
+
+<body>
+    <nav class="bg-gradient-to-r from-purple-400 to-blue-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0">
+                    <a href="/" class="text-white font-bold text-3xl">Lizard Hub</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <input class="rounded-full py-1 px-3 bg-white text-gray-800 focus:outline-none mx-5" type="text" placeholder="Search" id="searchInput">
+                    <!-- Dropdown для аккаунта -->
+                    <button href="/about" class="text-white hover:text-gray-300 focus:outline-none px-5 py-3" aria-haspopup="true" aria-expanded="false">
+                        About
+                    </button>
+                    <div class="relative">
+                        <button onclick="toogleDropdown()" class="text-white hover:text-gray-300 focus:outline-none px-5 py-3" id="navbarDropdown" aria-haspopup="true" aria-expanded="false">
+                            Account
+                        </button>
+                        <div id="accountDropdown" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg origin-top-right divide-y divide-gray-100 hidden" aria-labelledby="navbarDropdown">
+                            <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                            <a onclick="logout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex md:hidden">
+                    <!-- Кнопка для мобильного меню -->
+                    <button class="text-white hover:text-gray-300 focus:outline-none" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Мобильное меню -->
+        <div class="md:hidden" id="navbarNav">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <input class="rounded-full py-1 px-3 bg-white text-gray-800 focus:outline-none w-full" type="text" placeholder="Search" id="searchInput">
+                <div id="searchResults" class="dropdown-menu" aria-labelledby="navbarDropdown"></div>
+                <a href="#" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">About</a>
+                <a href="/profile" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">Profile</a>
+                <a onclick="logout()" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center cursor-pointer">Sign out</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto py-8">
+        <h1 class="text-4xl font-bold text-center mb-8"><%= post.speciesName %></h1>
+        <div class="flex flex-wrap">
+            <div class="w-full md:w-1/2 mb-8 md:mb-0">
+                <% post.images.forEach(image => { %>
+                <img src="/public/lizards/<%= image %>" class="rounded-lg mb-4 shadow-lg w-100" alt="<%= post.speciesName %>">
+                <% }); %>
+            </div>
+            <div class="w-full md:w-1/2 md:pl-8">
+                <p class="mb-4 text-lg"><%= post.description %></p>
+                <div class="mb-4">
+                    <strong class="block text-lg"><%= text.distribution %></strong>
+                    <p class="text-base"><%= post.distribution %></p>
+                </div>
+                <div class="mb-4">
+                    <strong class="block text-lg"><%= text.size %></strong>
+                    <p class="text-base"><%= post.sizeAndWeight %></p>
+                </div>
+                <div class="mb-4">
+                    <strong class="block text-lg"><%= text.diet %></strong>
+                    <p class="text-base"><%= post.diet %></p>
+                </div>
+                <div class="mb-4">
+                    <strong class="block text-lg"><%= text.characteristics %></strong>
+                    <p class="text-base"><%= post.characteristics %></p>
+                </div>
+                <div class="mb-4">
+                    <strong class="block text-lg"><%= text.conservation %></strong>
+                    <p class="text-base"><%= post.conservationStatus %></p>
+                </div>
+                <div class="mb-4">
+                    <strong class="block text-lg"><%= text.habitat %></strong>
+                    <p class="text-base"><%= post.habitatType %></p>
+                </div>
+                <div class="mb-4">
+                    <strong class="block text-lg"><%= text.facts %></strong>
+                    <ul class="list-disc pl-8 text-base">
+                        <% post.intrestingFacts.forEach(fact => { %>
+                        <li><%= fact %></li>
+                        <% }); %>
+                    </ul>
+                </div>
+                <div class="mb-4">
+                    <strong class="block text-lg"><%= text.links %></strong>
+                    <ul class="list-disc pl-8 text-base">
+                        <% post.externalLinks.forEach(link => { %>
+                        <li><a href="<%= link %>" target="_blank" class="list-disc pl-8 text-base text-blue-500 break-all"><%= link %></a></li>
+                        <% }); %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button id="openGalleryBtn" class="btn btn-primary mt-3 ml-5" onclick="openLizardGallery('<%= post.originalName %>')"><%= text.gallery %></button>
+        <div class="modal fade" id="galleryModal" tabindex="-1" role="dialog" aria-labelledby="galleryModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="galleryModalLabel">Lizard Gallery</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div id="galleryContainer" class="d-flex flex-wrap justify-content-center"></div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    <!-- Button to open the lizard sightings modal -->
+    <button id="openSightingsBtn" class="btn btn-primary mt-3 ml-5" onclick="getLizardSightings('<%= post.originalName %>')"><%= text.sightings %></button>
+
+    <!-- Modal for displaying lizard sightings -->
+    <div class="modal fade" id="sightingsModal" tabindex="-1" role="dialog" aria-labelledby="sightingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sightingsModalLabel">Lizard Sightings</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="sightingsContainer" class="d-flex flex-wrap justify-content-center"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mx-auto">
+        <!-- Existing content -->
+        
+        <!-- Comments Section -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold mb-4">Comments</h2>
+            <!-- Form for creating comments -->
+            <form id="commentForm" class="mb-8">
+                <div class="mb-4">
+                    <label for="commentDescription" class="block text-lg font-medium mb-2">Comment Description:</label>
+                    <textarea id="commentDescription" class="border rounded-md p-2 w-full text-lg resize-none" rows="4" placeholder="Enter your comment description here..."></textarea>
+                </div>
+
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Submit Comment</button>
+            </form>
+            <!-- Comments Display -->
+            <div id="commentsSection" class="mt-8">
+                <script>
+                    // Предположим, что информация о пользователе доступна в переменной currentUser
+                    var currentUser = JSON.parse(localStorage.getItem("user"))
+                </script>
+                <% comments.forEach(comment => { %>
+                    <div class="bg-gray-100 rounded-lg p-4 mb-4">
+                        <div class="flex items-start mb-2">
+                            <% if (comment.userPicturePath) { %>
+                                <img src="/public/avatars/<%= comment.userPicturePath %>" alt="Avatar" class="rounded-full h-10 w-10 mr-3">
+                            <% } else {%>
+                            <img src="/public/avatars/default.png" alt="Avatar" class="rounded-full h-10 w-10 mr-3">
+                            <% } %>
+                            <div class="flex-1">
+                                <h2 class="text-lg font-semibold"><%= comment.username %></h2>
+                                <p class="text-gray-600 text-sm"><%= comment.formattedDate %></p>
+                            </div>
+                        </div>
+                        <% if (comment.picturePath) { %>
+                            <img src="<%= comment.picturePath %>" class="w-25 rounded-lg mb-2" alt="Comment Picture">
+                        <% } %>
+                        <p class="text-gray-800"><%= comment.description %></p>
+                        <div class="flex items-center mt-2">
+                            
+                            <button class="text-gray-600 hover:text-red-600" onclick="likePost('<%= comment._id %>')"><i class="fas fa-heart"></i>
+                                Like</button>
+                            <p class="ml-3" id="comment_<%= comment._id %>"><%= comment.likes.size %></p>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/public/scripts/post.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</html>

@@ -1,0 +1,245 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Подключаем Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Подключаем Font Awesome для иконок -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Общие стили */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        /* Стили для заголовка */
+        .title {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        /* Стили для сетки постов */
+        .posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        /* Стили для карточек постов */
+        .post-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .post-card:hover {
+            transform: translateY(-5px);
+        }
+        .post-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .post-content {
+            padding: 20px;
+        }
+        .post-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .post-description {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        .read-more-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .read-more-btn:hover {
+            background-color: #0056b3;
+        }
+        /* Дополнительные стили для навбара */
+        .navbar {
+            background-color: #007bff; /* Синий цвет фона */
+            padding: 10px;
+        }
+        
+        .navbar-brand, .navbar-nav .nav-link {
+            color: #ffffff; /* Белый цвет текста */
+            font-weight: bold; /* Жирный шрифт */
+            text-decoration: none; /* Убираем подчеркивание у ссылок */
+            padding: 10px 15px; /* Отступы внутри элементов */
+            transition: all 0.3s ease; /* Плавное изменение стилей при наведении */
+        }
+
+        .navbar-brand:hover, .navbar-nav .nav-link:hover {
+            background-color: #0056b3; /* Темно-синий цвет фона при наведении */
+            border-radius: 5px; /* Закругленные углы */
+        }
+
+        .dropdown-menu {
+            background-color: #f8f9fa; /* Светло-серый цвет фона выпадающего меню */
+            max-height: 200px; /* Максимальная высота выпадающего меню */
+            overflow-y: auto; /* Добавление полосы прокрутки при необходимости */
+        }
+
+        .search-input {
+            width: 200px;
+        }
+
+        /* Flexbox для выравнивания элементов навбара */
+        .navbar-nav {
+            display: flex;
+            align-items: center; /* Выравнивание элементов по вертикали */
+        }
+
+        .navbar-nav .nav-item {
+            margin-right: 60px; /* Отступы между пунктами навигации */
+        }
+
+        /* Отдельные стили для поискового поля */
+        .search-container {
+            position: relative;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            border: 1px solid #ced4da;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            display: none;
+        }
+
+        .search-results.show {
+            display: block;
+        }
+
+        .search-results a {
+            display: block;
+            padding: 10px 15px;
+            color: #333333;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-results a:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
+    
+    
+</head>
+<body>
+    <nav class="bg-gradient-to-r from-purple-400 to-blue-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0">
+                    <a href="/" class="text-white font-bold text-3xl">Lizard Hub</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <input class="rounded-full py-1 px-3 bg-white text-gray-800 focus:outline-none mx-5" type="text" placeholder="Search" id="searchInput">
+                    <!-- Dropdown для аккаунта -->
+                    <button href="/about" class="text-white hover:text-gray-300 focus:outline-none px-5 py-3" aria-haspopup="true" aria-expanded="false">
+                        About
+                    </button>
+                    <div class="relative">
+                        <button onclick="toogleDropdown()" class="text-white hover:text-gray-300 focus:outline-none px-5 py-3" id="navbarDropdown" aria-haspopup="true" aria-expanded="false">
+                            Account
+                        </button>
+                        <div id="accountDropdown" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg origin-top-right divide-y divide-gray-100 hidden" aria-labelledby="navbarDropdown">
+                            <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                            <a onclick="logout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex md:hidden">
+                    <!-- Кнопка для мобильного меню -->
+                    <button class="text-white hover:text-gray-300 focus:outline-none" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Мобильное меню -->
+        <div class="md:hidden" id="navbarNav">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <input class="rounded-full py-1 px-3 bg-white text-gray-800 focus:outline-none w-full" type="text" placeholder="Search" id="searchInput">
+                <div id="searchResults" class="dropdown-menu" aria-labelledby="navbarDropdown"></div>
+                <a href="#" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">About</a>
+                <a href="/profile" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">Profile</a>
+                <a onclick="logout()" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center cursor-pointer">Sign out</a>
+            </div>
+        </div>
+    </nav>
+    
+    
+    
+    
+    
+    <div class="container">
+        <h1 class="title"><%= text.welcome %></h1>
+        <div class="posts">
+            <!-- Цикл для вывода каждого поста -->
+            <% posts.forEach(post => { %>
+                <div class="post-card">
+                    <img src="/public/lizards/<%= post.images[0] %>" alt="Post Image" class="post-img">
+                    <div class="post-content">
+                        <h2 class="post-title"><%= post.speciesName %></h2>
+                        <p class="post-description"><%= post.description.substring(0, 150) %>...</p>
+                        <a href="/posts/<%= post._id %>" class="read-more-btn"><%= text.more %></a>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+        <button id="openGalleryBtn" class="btn btn-primary mt-3" onclick="openLizardGallery()"><%= text.gallery %></button>
+        <div class="modal fade" id="galleryModal" tabindex="-1" role="dialog" aria-labelledby="galleryModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="galleryModalLabel">Lizard Gallery</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div id="galleryContainer" class="d-flex flex-wrap justify-content-center"></div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+    </div>
+    <script src="/public/scripts/main.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

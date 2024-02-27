@@ -1,0 +1,277 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Todo App</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    
+    <banner class="container">
+        <div class="d-flex flex-column m-5 bg-light rounded-5 py-3" style="align-items: center;"> 
+            <H5 id="User"></H2>
+            <button onclick="logout()" class="btn btn-primary">Log Out</button>
+        </div>
+    </banner>
+    <script>
+        const user = JSON.parse(localStorage.getItem("user"));
+        document.getElementById("User").innerText = user.username;
+        const logout = () => {
+            localStorage.removeItem("user")
+            location.replace("/admin")
+        }
+
+    </script>
+    <div class="container mt-5">
+        <h1 class="mb-4">Admin panel</h1>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLizardModal">
+            Add Lizard
+        </button>
+    
+        <!-- Модальное окно -->
+        <div class="modal fade" id="addLizardModal" tabindex="-1" aria-labelledby="addLizardModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addLizardModalLabel">Add Lizard Object</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Форма для добавления объекта ящерицы -->
+                        <form id="lizardForm">
+                            <div class="mb-3">
+                                <label for="speciesName" class="form-label">Species Name:</label>
+                                <input type="text" id="speciesName" name="speciesName" class="form-control" required>
+                            </div>
+                
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description:</label>
+                                <textarea id="description" name="description" class="form-control" rows="3" required></textarea>
+                            </div>
+                
+                            <div class="mb-3">
+                                <label for="images" class="form-label">Images:</label>
+                                <input type="file" id="images" name="images" class="form-control" multiple>
+                            </div>
+                
+                            <div class="mb-3">
+                                <label for="distribution" class="form-label">Distribution:</label>
+                                <input type="text" id="distribution" name="distribution" class="form-control">
+                            </div>
+                
+                            <div class="mb-3">
+                                <label for="sizeAndWeight" class="form-label">Size and Weight:</label>
+                                <input type="text" id="sizeAndWeight" name="sizeAndWeight" class="form-control">
+                            </div>
+                
+                            <div class="mb-3">
+                                <label for="diet" class="form-label">Diet:</label>
+                                <input type="text" id="diet" name="diet" class="form-control">
+                            </div>
+                
+                            <div class="mb-3">
+                                <label for="characteristics" class="form-label">Characteristics:</label>
+                                <input type="text" id="characteristics" name="characteristics" class="form-control">
+                            </div>
+                
+                            <div class="mb-3">
+                                <label for="conservationStatus" class="form-label">Conservation Status:</label>
+                                <input type="text" id="conservationStatus" name="conservationStatus" class="form-control">
+                            </div>
+                
+                            <div class="mb-3">
+                                <label for="habitatType" class="form-label">Habitat Type:</label>
+                                <input type="text" id="habitatType" name="habitatType" class="form-control">
+                            </div>
+                
+                            <div class="mb-3">
+                                <label for="intrestingFacts" class="form-label">Interesting Facts (comma separated):</label>
+                                <input type="text" id="intrestingFacts" name="intrestingFacts" class="form-control">
+                            </div>
+                
+                            <div class="mb-3">
+                                <label for="taxonomyGenus" class="form-label">Taxonomy Genus:</label>
+                                <input type="text" id="taxonomyGenus" name="taxonomy[genus]" class="form-control">
+                            </div>
+                
+                            <div class="mb-3">
+                                <label for="taxonomyFamily" class="form-label">Taxonomy Family:</label>
+                                <input type="text" id="taxonomyFamily" name="taxonomy[family]" class="form-control">
+                            </div>
+                
+                            <div class="mb-3">
+                                <label for="externalLinks" class="form-label">External Links (comma separated):</label>
+                                <input type="text" id="externalLinks" name="externalLinks" class="form-control">
+                            </div>
+                
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="add" class="mb-3">
+            <div class="mb-3">
+                <label for="task" class="form-label">Username:</label>
+                <input type="text" id="username" name="task" class="form-control" required>
+                <label for="password" class="form-label">Password:</label>
+                <input type="text" id="password" name="task" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add User</button>
+        </form>
+
+        <h2>Users</h2>
+        <ul class="list-group">
+            <% usersList.forEach((todoItem) => { %>
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="col-8">
+                        <p>Username: <%= todoItem.username %><br /></p>
+                        <p>Email: <%= todoItem.email %></p>
+                        <p>Created At: <%= todoItem.createdAt %></p>
+                        <p>Is Admin: <%= todoItem.isAdmin %></p>
+                    </div>
+                    <form id="updateTaskForm_<%= todoItem._id %>" class="col-4" style="display:inline;">
+                        <div class="mb-3">                            
+                            <label for="taskUpdate" class="form-label">Edit Username:</label>
+                            <input type="text" id="usernameUpdate_<%= todoItem._id %>" name="task" class="form-control">
+
+                            <label for="taskUpdate" class="form-label">Edit Password:</label>
+                            <input type="text" id="passwordUpdate_<%= todoItem._id %>" name="task" class="form-control">
+                        </div>
+                        <button type="button" onclick="updateTask('<%= todoItem._id %>')" class="btn btn-warning">Update</button>
+                        <button class="btn btn-warning" onclick="adminToogle('<%= todoItem._id %>')"><% if (todoItem.isAdmin) { %>Remove from Admins<% } else { %>Make Admin<%} %></button>
+
+                    </form>
+
+                    <button class="btn btn-danger ms-3" onclick="deleteTask('<%= todoItem._id %>')">Delete</button>
+                </li>
+            <% }); %>
+        </ul>
+        
+    </div>
+    <footer class="w-100 bg-light">
+        <h2 style="text-align: center;">Aubakirov Sultan SE-2201</h2>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const form = document.getElementById("add")
+        form.addEventListener("submit", (e) => {
+            e.preventDefault()
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            axios.post("/auth/register", { username, password })
+                .then((res) => {
+                    console.log(res.data);
+                })
+                .then((e)=>{
+                    window.location.href = "/admin";
+                })
+                .catch((error) => {
+                    console.error("Error adding user:", error);
+                });
+        })
+
+        const adminToogle = (id) => {
+            if (id == user._id){
+                alert("You cannot delete yourself from admins")
+                return ;
+            }
+            axios.post("/users/userToAdmin", { userId: id})
+                .then((res) => {
+                    console.log(res.data);
+                })  
+                .then((e)=>{
+                    window.location.href = "/admin";
+                })
+                .catch((error) => {
+                    console.error("Error updating user:", error);
+                });
+
+        }
+
+        const updateTask = (id) => {
+            if (id == user._id){
+                alert("You cannot update yourself")
+                return ;
+            }
+            const usernameUpdate = document.getElementById("usernameUpdate_" + id).value;
+            const passwordUpdate = document.getElementById("passwordUpdate_" + id).value;
+            axios.post("/users/update", { userId: id, username: usernameUpdate, password: passwordUpdate})
+                .then((res) => {
+                    console.log(res.data);
+                })  
+                .then((e)=>{
+                    window.location.href = "/admin";
+                })
+                .catch((error) => {
+                    console.error("Error updating user:", error);
+                });
+        }
+
+        const deleteTask = (id) => {
+            if (id == user._id){
+                alert("You cannot delete yourself")
+                return ;
+            }
+            console.log(id)
+            axios.delete("/users/delete/" + id)
+                .then((res) => {
+                    console.log(res.data);
+                }) 
+                .then((e) => {
+                    window.location.href = "/admin";
+                })
+                .catch((error) => {
+                    console.error("Error deleting user:", error);
+                });
+        }
+
+        document.getElementById("lizardForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Предотвращение стандартной отправки формы
+
+            // Получение данных формы
+            const formData = new FormData(this);
+            const object = {};
+            formData.forEach(function(value, key) {
+                if (key === 'intrestingFacts' || key === 'externalLinks') {
+                    object[key] = value.split(',').map(item => item.trim());
+                } else if (key === 'taxonomy[genus]' || key === 'taxonomy[family]') {
+                    const taxonomyKey = key.split('[')[1].split(']')[0];
+                    if (!object['taxonomy']) {
+                        object['taxonomy'] = {};
+                    }
+                    object['taxonomy'][taxonomyKey] = value;
+                } else {
+                    object[key] = value;
+                }
+            });
+
+            // Отправка данных на сервер
+            fetch("/lizards", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(object)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.lizard) {
+                    alert("something went wrong")
+                }
+                else{
+                    window.location.href = "/admin"
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+
+    </script>
+</body>
+</html>

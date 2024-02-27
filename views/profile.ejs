@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Подключаем Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Подключаем Font Awesome для иконок -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+
+<body >
+    <nav class="bg-gradient-to-r from-purple-400 to-blue-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0">
+                    <a href="/" class="text-white font-bold text-3xl">Lizard Hub</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <input class="rounded-full py-1 px-3 bg-white text-gray-800 focus:outline-none mx-5" type="text" placeholder="Search" id="searchInput">
+                    <!-- Dropdown для аккаунта -->
+                    <button href="/about" class="text-white hover:text-gray-300 focus:outline-none px-5 py-3" aria-haspopup="true" aria-expanded="false">
+                        About
+                    </button>
+                    <div class="relative">
+                        <button onclick="toogleDropdown()" class="text-white hover:text-gray-300 focus:outline-none px-5 py-3" id="navbarDropdown" aria-haspopup="true" aria-expanded="false">
+                            Account
+                        </button>
+                        <div id="accountDropdown" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg origin-top-right divide-y divide-gray-100 hidden" aria-labelledby="navbarDropdown">
+                            <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                            <a onclick="logout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex md:hidden">
+                    <!-- Кнопка для мобильного меню -->
+                    <button class="text-white hover:text-gray-300 focus:outline-none" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Мобильное меню -->
+        <div class="md:hidden" id="navbarNav">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <input class="rounded-full py-1 px-3 bg-white text-gray-800 focus:outline-none w-full" type="text" placeholder="Search" id="searchInput">
+                <div id="searchResults" class="dropdown-menu" aria-labelledby="navbarDropdown"></div>
+                <a href="#" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">About</a>
+                <a href="/profile" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">Profile</a>
+                <a onclick="logout()" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center cursor-pointer">Sign out</a>
+            </div>
+        </div>
+    </nav>
+    <div class="bg-gradient-to-r from-purple-400 to-blue-500 min-h-screen flex flex-col pt-5 items-center">
+        <div class="container mx-auto rounded-lg bg-white shadow-lg p-8 mt-5">
+            <!-- Заголовок страницы -->
+            <h1 class="text-4xl font-bold text-center mb-8 text-blue-500">User Profile <i class="fas fa-user"></i></h1>
+            <!-- Информация о пользователе -->
+            <div class="user-info mb-8">
+                <div class="flex items-center justify-center mb-4" id="imageContainer">
+                    <img src="/public/avatars/default.png" class="w-40 h-40 rounded-full border-4 border-blue-500" alt="User Avatar">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label for="username" class="text-lg font-semibold text-blue-500"><i class="fas fa-user"></i> Username:</label>
+                        <p class="text-xl text-gray-800" id="usernameContainer">JohnDoe</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="text-lg font-semibold text-blue-500"><i class="fas fa-envelope"></i> Email:</label>
+                        <p class="text-xl text-gray-800" id="emailContainer">johndoe@example.com</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="location" class="text-lg font-semibold text-blue-500"><i class="fas fa-map-marker-alt"></i> Location:</label>
+                        <p class="text-xl text-gray-800" id="locationContainer">New York, USA</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Кнопка для открытия модального окна -->
+            <button type="button" id='openModalBtn' class="btn btn-primary w-full md:w-auto mx-auto text-lg"><i class="fas fa-edit"></i> Edit User Data</button>
+        </div>
+        
+
+
+        <!-- Модальное окно для изменения данных пользователя -->
+        <div class="fixed inset-0 z-50 overflow-y-auto hidden" id="editModal">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                    <div class="absolute inset-0 bg-gray-500 opacity-75" id="modalBackground"></div>
+                </div>
+                <!-- Вертикально центрируем контент -->
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <!-- Модальное окно -->
+                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                                    Edit User Data
+                                </h3>
+                                <!-- Кнопка закрытия модального окна в правом верхнем углу -->
+                                <button type="button" class="absolute top-0 right-0 mt-4 mr-4 text-gray-500 hover:text-gray-700" id="closeModalBtn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                <div class="mt-5">
+                                    <form id="formEdit">
+                                        <div class="form-group mt-4">
+                                            <label for="username" class="block mb-2 text-sm font-medium text-blue-500"><i class="fas fa-user"></i> Username:</label>
+                                            <input type="text" id="username" name="username" value="JohnDoe" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        </div>
+                                        <div class="form-group mt-3">
+                                            <label for="email" class="block mb-2 text-sm font-medium text-blue-500"><i class="fas fa-envelope"></i> Email:</label>
+                                            <input type="email" id="email" name="email" value="johndoe@example.com" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        </div>
+                                        <div class="form-group mt-3">
+                                            <label for="password" class="block mb-2 text-sm font-medium text-blue-500"><i class="fas fa-lock"></i> Password:</label>
+                                            <input type="password" id="password" name="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        </div>
+                                        <div class="form-group mt-3">
+                                            <label for="formFile" class="form-label mt-4 text-blue-500"><i class="fas fa-user-circle"></i> Avatar</label>
+                                            <input type="file" id="formFile" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        </div>
+                                        <div class="form-group mt-3">
+                                            <label for="location" class="block mb-2 text-sm font-medium text-blue-500"><i class="fas fa-map-marker-alt"></i> Location:</label>
+                                            <input type="text" id="location" name="location" value="New York, USA" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        </div>
+                                        
+                                        <!-- Изменяем кнопку "Save Changes" на кнопку с градиентом -->
+                                        <button type="submit" class="btn btn-gradient-primary w-full mt-5"><i class="fas fa-save"></i> Save Changes</button>
+                                        <!-- Кнопка закрытия модального окна внизу справа -->
+                                        <button type="button" class="absolute bottom-0 right-0 mb-4 mr-4 text-gray-500 hover:text-gray-700" id="closeModalBtn2">
+                                            Close
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Подключаем jQuery и Bootstrap JS для интерактивности и стилей -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/public/scripts/profile.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Обработчик клика по кнопке для открытия модального окна
+            $('#openModalBtn').click(function () {
+                renderFormUser();
+                $('#editModal').removeClass('hidden');
+            });
+    
+            // Обработчик клика по фону модального окна для закрытия
+            $('#editModal').click(function (event) {
+                // Проверяем, было ли нажатие на фон модального окна
+                if (event.target == document.getElementById("modalBackground")) {
+                    $(this).addClass('hidden');
+                }
+            });
+    
+            // Обработчик клика по кнопке для закрытия модального окна
+            $('#closeModalBtn').click(function () {
+                $('#editModal').addClass('hidden');
+            });
+    
+            // Обработчик клика по второй кнопке для закрытия модального окна
+            $('#closeModalBtn2').click(function () {
+                $('#editModal').addClass('hidden');
+            });
+        });
+    </script>
+    
+
+</body>
+
+</html>
