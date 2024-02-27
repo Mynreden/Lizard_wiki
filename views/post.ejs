@@ -22,13 +22,20 @@
                     <a href="/" class="text-white font-bold text-3xl">Lizard Hub</a>
                 </div>
                 <div class="hidden md:flex items-center space-x-4">
-                    <input class="rounded-full py-1 px-3 bg-white text-gray-800 focus:outline-none mx-5" type="text" placeholder="Search" id="searchInput">
+                    <input class="rounded-full py-1 px-3 bg-white text-gray-800 focus:outline-none mx-3" type="text" placeholder="Search" id="searchInput">
                     <!-- Dropdown для аккаунта -->
-                    <button href="/about" class="text-white hover:text-gray-300 focus:outline-none px-5 py-3" aria-haspopup="true" aria-expanded="false">
-                        About
-                    </button>
+                
                     <div class="relative">
-                        <button onclick="toogleDropdown()" class="text-white hover:text-gray-300 focus:outline-none px-5 py-3" id="navbarDropdown" aria-haspopup="true" aria-expanded="false">
+                        <button onclick="toggleLanguageDropdown()" class="text-white hover:text-gray-300 focus:outline-none px-3 py-3" aria-haspopup="true" aria-expanded="false">
+                            Language
+                        </button>
+                        <div id="languageDropdown" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg origin-top-right divide-y divide-gray-100 hidden" aria-labelledby="languageDropdown">
+                            <button onclick="changeLanguage('eng')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-100">English</button>
+                            <button onclick="changeLanguage('rus')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-100">Russian</button>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <button onclick="toogleDropdown()" class="text-white hover:text-gray-300 focus:outline-none px-3 py-3" id="navbarDropdown" aria-haspopup="true" aria-expanded="false">
                             Account
                         </button>
                         <div id="accountDropdown" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg origin-top-right divide-y divide-gray-100 hidden" aria-labelledby="navbarDropdown">
@@ -53,9 +60,13 @@
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <input class="rounded-full py-1 px-3 bg-white text-gray-800 focus:outline-none w-full" type="text" placeholder="Search" id="searchInput">
                 <div id="searchResults" class="dropdown-menu" aria-labelledby="navbarDropdown"></div>
-                <a href="#" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">About</a>
-                <a href="/profile" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">Profile</a>
-                <a onclick="logout()" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center cursor-pointer">Sign out</a>
+                <div id="forLogined" class="hidden">
+                    <a href="/profile" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">Profile</a>
+                    <a onclick="logout()" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center cursor-pointer">Sign out</a>
+                </div>
+                <a onclick="changeLanguage('eng')" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">English</a>
+                <a onclick="changeLanguage('rus')" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">Russian</a>
+                <a href="/login" id="forNotLogined" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">Login</a>
             </div>
         </div>
     </nav>
@@ -65,7 +76,7 @@
         <div class="flex flex-wrap">
             <div class="w-full md:w-1/2 mb-8 md:mb-0">
                 <% post.images.forEach(image => { %>
-                <img src="/public/lizards/<%= image %>" class="rounded-lg mb-4 shadow-lg w-100" alt="<%= post.speciesName %>">
+                <img src="https://storage.googleapis.com/lizard_app/<%= image %>" class="rounded-lg mb-4 shadow-lg w-100" alt="<%= post.speciesName %>">
                 <% }); %>
             </div>
             <div class="w-full md:w-1/2 md:pl-8">
@@ -179,9 +190,9 @@
                     <div class="bg-gray-100 rounded-lg p-4 mb-4">
                         <div class="flex items-start mb-2">
                             <% if (comment.userPicturePath) { %>
-                                <img src="/public/avatars/<%= comment.userPicturePath %>" alt="Avatar" class="rounded-full h-10 w-10 mr-3">
+                                <img src="https://storage.googleapis.com/lizard_app/<%= comment.userPicturePath %>" alt="Avatar" class="rounded-full h-10 w-10 mr-3">
                             <% } else {%>
-                            <img src="/public/avatars/default.png" alt="Avatar" class="rounded-full h-10 w-10 mr-3">
+                            <img src="https://storage.googleapis.com/lizard_app/default.png" alt="Avatar" class="rounded-full h-10 w-10 mr-3">
                             <% } %>
                             <div class="flex-1">
                                 <h2 class="text-lg font-semibold"><%= comment.username %></h2>
@@ -189,7 +200,7 @@
                             </div>
                         </div>
                         <% if (comment.picturePath) { %>
-                            <img src="<%= comment.picturePath %>" class="w-25 rounded-lg mb-2" alt="Comment Picture">
+                            <img src="https://storage.googleapis.com/lizard_app/<%= comment.picturePath %>" class="w-25 rounded-lg mb-2" alt="Comment Picture">
                         <% } %>
                         <p class="text-gray-800"><%= comment.description %></p>
                         <div class="flex items-center mt-2">

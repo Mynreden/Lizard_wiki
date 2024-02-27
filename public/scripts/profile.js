@@ -17,7 +17,7 @@ const getUserInfo = async (id) => {
 }
 
 const renderUserInfo = (user) => {
-    document.getElementById('imageContainer').innerHTML = `<img src="/public/avatars/${user.picturePath}" class="w-40 h-40 rounded-full border-4 border-blue-500" alt="User Avatar">`;
+    document.getElementById('imageContainer').innerHTML = `<img src="https://storage.googleapis.com/lizard_app/${user.picturePath}" class="w-40 h-40 rounded-full border-4 border-blue-500" alt="User Avatar">`;
     document.getElementById('usernameContainer').innerHTML = user.username;
     document.getElementById('emailContainer').innerHTML = user.email;
     document.getElementById('locationContainer').innerHTML = user.location;

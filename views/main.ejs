@@ -158,13 +158,20 @@
                     <a href="/" class="text-white font-bold text-3xl">Lizard Hub</a>
                 </div>
                 <div class="hidden md:flex items-center space-x-4">
-                    <input class="rounded-full py-1 px-3 bg-white text-gray-800 focus:outline-none mx-5" type="text" placeholder="Search" id="searchInput">
+                    <input class="rounded-full py-1 px-3 bg-white text-gray-800 focus:outline-none mx-3" type="text" placeholder="Search" id="searchInput">
                     <!-- Dropdown для аккаунта -->
-                    <button href="/about" class="text-white hover:text-gray-300 focus:outline-none px-5 py-3" aria-haspopup="true" aria-expanded="false">
-                        About
-                    </button>
+                
                     <div class="relative">
-                        <button onclick="toogleDropdown()" class="text-white hover:text-gray-300 focus:outline-none px-5 py-3" id="navbarDropdown" aria-haspopup="true" aria-expanded="false">
+                        <button onclick="toggleLanguageDropdown()" class="text-white hover:text-gray-300 focus:outline-none px-3 py-3" aria-haspopup="true" aria-expanded="false">
+                            Language
+                        </button>
+                        <div id="languageDropdown" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg origin-top-right divide-y divide-gray-100 hidden" aria-labelledby="languageDropdown">
+                            <button onclick="changeLanguage('eng')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-100">English</button>
+                            <button onclick="changeLanguage('rus')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-100">Russian</button>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <button onclick="toogleDropdown()" class="text-white hover:text-gray-300 focus:outline-none px-3 py-3" id="navbarDropdown" aria-haspopup="true" aria-expanded="false">
                             Account
                         </button>
                         <div id="accountDropdown" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg origin-top-right divide-y divide-gray-100 hidden" aria-labelledby="navbarDropdown">
@@ -189,9 +196,13 @@
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <input class="rounded-full py-1 px-3 bg-white text-gray-800 focus:outline-none w-full" type="text" placeholder="Search" id="searchInput">
                 <div id="searchResults" class="dropdown-menu" aria-labelledby="navbarDropdown"></div>
-                <a href="#" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">About</a>
-                <a href="/profile" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">Profile</a>
-                <a onclick="logout()" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center cursor-pointer">Sign out</a>
+                <div id="forLogined" class="hidden">
+                    <a href="/profile" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">Profile</a>
+                    <a onclick="logout()" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center cursor-pointer">Sign out</a>
+                </div>
+                <a onclick="changeLanguage('eng')" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">English</a>
+                <a onclick="changeLanguage('rus')" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">Russian</a>
+                <a href="/login" id="forNotLogined" class="text-white hover:bg-blue-700 block px-3 py-2 rounded-md text-base font-medium text-center">Login</a>
             </div>
         </div>
     </nav>
@@ -206,7 +217,7 @@
             <!-- Цикл для вывода каждого поста -->
             <% posts.forEach(post => { %>
                 <div class="post-card">
-                    <img src="/public/lizards/<%= post.images[0] %>" alt="Post Image" class="post-img">
+                    <img src="https://storage.googleapis.com/lizard_app/<%= post.images[0] %>" alt="Post Image" class="post-img">
                     <div class="post-content">
                         <h2 class="post-title"><%= post.speciesName %></h2>
                         <p class="post-description"><%= post.description.substring(0, 150) %>...</p>

@@ -5,8 +5,8 @@ import multer from "multer"
 const router = Router()
 
 router.get('/:lizardId', getCommentsByLizard)
-router.post('/:lizardId', multer().none(), createComment)
-router.patch('/like/:commentId', likeComment)
+router.post('/:lizardId', verifyToken,  multer().none(), createComment)
+router.patch('/like/:commentId',verifyToken, likeComment)
 //router.delete('/:postId', )
 
 

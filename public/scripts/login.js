@@ -29,6 +29,8 @@ loginForm.addEventListener("submit", async (e) => {
     console.log(data)
     localStorage.setItem("user", JSON.stringify(data.user))
     localStorage.setItem("token", data.token)
+    localStorage.setItem("lang", "eng")
+
     window.location.replace("/")
 })
 
@@ -64,6 +66,8 @@ document.getElementById('signUpForm').addEventListener('submit', async function(
     console.log(data)
     localStorage.setItem("user", JSON.stringify(data.user))
     localStorage.setItem("token", data.token)
+    localStorage.setItem("lang", "eng")
+
     window.location.replace("/")
 });
 

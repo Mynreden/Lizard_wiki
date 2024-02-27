@@ -1,16 +1,31 @@
+if (localStorage.getItem("lang") == "rus" && new URLSearchParams(window.location.search).get("lang") != "rus"){
+    window.location.href = window.location.href + "?lang=rus"
+}
+const isAuth = !!localStorage.getItem("user")
 
-document.getElementById("navbarDropdown").innerHTML = JSON.parse(localStorage.getItem("user")).username
-const user = JSON.parse(localStorage.getItem("user"))
-const token = localStorage.getItem("token")
+let user = null;
+let token = null;
+
+if (isAuth){
+    user = JSON.parse(localStorage.getItem("user"));
+    token = localStorage.getItem("token");
+    
+    document.getElementById("forLogined").classList.remove('hidden')
+    document.getElementById("forNotLogined").classList.add('hidden')
+
+    document.getElementById("navbarDropdown").innerHTML = JSON.parse(localStorage.getItem("user")).username
+}
 
 const logout = () => {
     localStorage.clear();
     window.location.replace("/login")
 } 
 
-
 const toogleDropdown = () => {
-    console.log("dsfsdf");
+    if (!isAuth){
+        window.location.href = '/login';
+        return;
+    }
     const drop = document.getElementById('accountDropdown');
     if (drop.classList.contains('hidden')){
         drop.classList.remove("hidden")
@@ -19,8 +34,13 @@ const toogleDropdown = () => {
     }
 } 
 
+
+
 const likePost = async (id) => {
-    console.log(id);
+    if (!isAuth){
+        alert("You need to log in!")
+        return;
+    }
     const data = await fetch(`/comments/like/${id}`, {
         method: "PATCH",
         headers: {
@@ -43,7 +63,10 @@ const commentForm = document.getElementById('commentForm');
 
 commentForm.addEventListener('submit', async (event) => {
     event.preventDefault(); // Предотвращаем стандартное поведение отправки формы
-
+    if (!isAuth){
+        alert("You need to log in to add comments!");
+        return;
+    }
     const formData = new FormData(); // Создаем объект FormData из формы
     formData.append("user", JSON.stringify(user));
     formData.append("description", document.getElementById("commentDescription").value)
@@ -135,3 +158,28 @@ const getLizardSightings = async (speciesName) => {
         console.error('Error fetching lizard sightings:', error);
     }
 };
+
+const toggleLanguageDropdown = () => {
+    const drop = document.getElementById('languageDropdown');
+    if (drop.classList.contains('hidden')){
+        drop.classList.remove("hidden")
+    } else {
+        drop.classList.add('hidden');
+    }
+}
+
+const changeLanguage = (lang) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (lang == urlParams.get('lang') || (!urlParams.get('lang') && lang != 'rus')){
+        console.log("skip")
+        return;
+    } else {
+        localStorage.setItem("lang", lang)
+
+        if (lang == "rus"){            
+            window.location.href = window.location.href + "?lang=rus"
+        } else{           
+            window.location.href = window.location.href.split('?')[0]
+        }
+    }
+}
