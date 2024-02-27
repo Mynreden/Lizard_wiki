@@ -5,6 +5,7 @@ import User from "../models/UserModel.js"
 
 export const register = async (req, res, cb) => {
     try {
+        console.log(req.body)
         let {
             username,
             email,
