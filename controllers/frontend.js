@@ -1,8 +1,6 @@
 import Lizard from "../models/LizardModel.js";
 import Comment from "../models/CommentModel.js";
 import User from "../models/UserModel.js";
-import translate from "google-translate-api";
-
 
 const translateObject = async (obj) => {
     // Translate each field that needs translation
