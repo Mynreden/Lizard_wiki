@@ -19,7 +19,7 @@ import http from "http"
 dotenv.config()
 
 // Debug mode
-const useLocalDB = true
+const useLocalDB = false
 
 
 // Some constants
@@ -101,3 +101,5 @@ mongoose.connection.on('disconnected', () => {
 server.listen(port, () =>{
     console.log(`Listening in http://localhost:${port}`);
 })
+
+export default app;
