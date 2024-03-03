@@ -217,7 +217,7 @@
             <!-- Цикл для вывода каждого поста -->
             <% posts.forEach(post => { %>
                 <div class="post-card">
-                    <img src="https://storage.googleapis.com/lizard_app/<%= post.images[0] %>" alt="Post Image" class="post-img">
+                    <img src="/public/lizards/<%= post.images[0] %>" alt="Post Image" class="post-img">
                     <div class="post-content">
                         <h2 class="post-title"><%= post.speciesName %></h2>
                         <p class="post-description"><%= post.description.substring(0, 150) %>...</p>
